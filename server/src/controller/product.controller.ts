@@ -41,13 +41,17 @@ class ProductController {
         res.status(400).json({ error: "Product ID is required." });
         return;
       }
-
       const product = await prismaClient.product.findUnique({
         where: { id: productId },
         include: {
           reviews: {
             include: {
               photos: true,
+              user: {
+                select: {
+                  fullName: true,
+                },
+              },
             },
           },
         },
